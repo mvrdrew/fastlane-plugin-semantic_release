@@ -53,7 +53,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "# 1.0.2 (2019-05-25)\n\n### Bug fixes\n- sub ([short_hash](/long_hash))\n\n### Documentation\n- sub ([short_hash](/long_hash))"
+        result = "## 1.0.2 (2019-05-25)\n\n### Bug fixes\n- sub ([short_hash](/long_hash))\n\n### Documentation\n- sub ([short_hash](/long_hash))"
 
         expect(execute_lane_test).to eq(result)
       end
@@ -119,7 +119,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "# 1.0.2 (2019-05-25)\n\n### Bug fixes\n- sub ([short_hash](/long_hash)) - Jiri Otahal\n\n### BREAKING CHANGES\n- Test ([short_hash](/long_hash)) - Jiri Otahal"
+        result = "## 1.0.2 (2019-05-25)\n\n### Bug fixes\n- sub ([short_hash](/long_hash)) - Jiri Otahal\n\n### BREAKING CHANGES\n- Test ([short_hash](/long_hash)) - Jiri Otahal"
 
         expect(execute_lane_test_author).to eq(result)
       end
@@ -133,7 +133,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "# 1.0.2 (2019-05-25)\n\n### Bug fixes\n- sub ([short_hash](/long_hash))\n\n### BREAKING CHANGES\n- Test ([short_hash](/long_hash))"
+        result = "## 1.0.2 (2019-05-25)\n\n### Bug fixes\n- sub ([short_hash](/long_hash))\n\n### BREAKING CHANGES\n- Test ([short_hash](/long_hash))"
 
         expect(execute_lane_test).to eq(result)
       end
@@ -160,7 +160,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "# 1.0.2 (2019-05-25)\n\n### Bug fixes\n- **test:** sub ([short_hash](/long_hash))"
+        result = "## 1.0.2 (2019-05-25)\n\n### Bug fixes\n- **test:** sub ([short_hash](/long_hash))"
 
         expect(execute_lane_test).to eq(result)
       end
@@ -186,7 +186,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "# 1.0.2 (2019-05-25)\n\n### Bug fixes\n- **test:** sub ([short_hash](/long_hash))\n\n### Other work\n- Custom Merge... ([short_hash](/long_hash))"
+        result = "## 1.0.2 (2019-05-25)\n\n### Bug fixes\n- **test:** sub ([short_hash](/long_hash))\n\n### Other work\n- Custom Merge... ([short_hash](/long_hash))"
 
         expect(execute_lane_test).to eq(result)
       end
@@ -211,7 +211,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "# 1.0.2 (2019-05-25)\n\n### Bug fixes\n- sub\n\n### Documentation\n- sub"
+        result = "## 1.0.2 (2019-05-25)\n\n### Bug fixes\n- sub\n\n### Documentation\n- sub"
 
         expect(execute_lane_test_no_links).to eq(result)
       end

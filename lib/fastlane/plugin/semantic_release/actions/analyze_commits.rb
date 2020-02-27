@@ -105,7 +105,7 @@ module Fastlane
             patch_changes += 1
           end
 
-          UI.message("#{line}")
+          UI.message(line.to_s)
         end
 
         if major_changes > 0

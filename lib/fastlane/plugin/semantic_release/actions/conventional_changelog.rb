@@ -122,7 +122,7 @@ module Fastlane
         case style
         when "title"
           if format == "markdown"
-            "# #{text}"
+            "## #{text}"
           elsif format == "slack"
             "*#{text}*"
           else

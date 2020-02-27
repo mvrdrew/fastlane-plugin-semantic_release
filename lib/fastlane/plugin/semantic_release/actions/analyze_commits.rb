@@ -76,6 +76,10 @@ module Fastlane
         UI.message("Found #{splitted.length} commits since last release")
         releases = params[:releases]
 
+        major_changes = 0
+        minor_changes = 0
+        patch_changes = 0
+
         splitted.each do |line|
           # conventional commits are in format
           # type: subject (fix: app crash - for example)
@@ -94,18 +98,25 @@ module Fastlane
           end
 
           if commit[:release] == "major" || commit[:is_breaking_change]
-            next_major += 1
-            next_minor = 0
-            next_patch = 0
+            major_changes += 1
           elsif commit[:release] == "minor"
-            next_minor += 1
-            next_patch = 0
+            minor_changes += 1
           elsif commit[:release] == "patch"
-            next_patch += 1
+            patch_changes += 1
           end
 
-          next_version = "#{next_major}.#{next_minor}.#{next_patch}"
-          UI.message("#{next_version}: #{line}")
+          UI.message("#{line}")
+        end
+
+        if major_changes > 0
+          next_major += 1
+          next_minor = 0
+          next_patch = 0
+        elsif minor_changes > 0
+          next_minor += 1
+          next_patch = 0
+        elsif patch_changes > 0
+          next_patch += 1
         end
 
         next_version = "#{next_major}.#{next_minor}.#{next_patch}"

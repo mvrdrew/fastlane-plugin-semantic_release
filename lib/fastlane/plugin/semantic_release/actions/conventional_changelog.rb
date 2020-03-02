@@ -45,12 +45,12 @@ module Fastlane
 
         # Begining of release notes
         if params[:display_title] == true
-          title = version
-          title += " #{params[:title]}" if params[:title]
-          title += " (#{Date.today})"
+          title = style_text(version, format, "title").to_s
+          title += " - #{params[:title]}" if params[:title]
+          title += " - #{Date.today}"
 
-          result = style_text(title, format, "title").to_s
-          result += "\n\n"
+          # result = style_text(title, format, "title").to_s
+          result += "#{title}\n\n"
         end
 
         params[:order].each do |type|
@@ -122,7 +122,7 @@ module Fastlane
         case style
         when "title"
           if format == "markdown"
-            "## #{text}"
+            "## [#{text}]"
           elsif format == "slack"
             "*#{text}*"
           else

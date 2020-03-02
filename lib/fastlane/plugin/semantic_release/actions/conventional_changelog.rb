@@ -58,7 +58,7 @@ module Fastlane
           next if commits.none? { |commit| commit[:type] == type }
 
           result += style_text(sections[type.to_sym], format, "heading").to_s
-          result += "\n"
+          result += "\n\n"
 
           commits.each do |commit|
             next if commit[:type] != type || commit[:is_merge]
@@ -88,7 +88,7 @@ module Fastlane
 
         if commits.any? { |commit| commit[:is_breaking_change] == true }
           result += style_text("BREAKING CHANGES", format, "heading").to_s
-          result += "\n"
+          result += "\n\n"
 
           commits.each do |commit|
             next unless commit[:is_breaking_change]

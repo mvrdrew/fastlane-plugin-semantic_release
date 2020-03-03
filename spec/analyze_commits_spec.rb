@@ -23,7 +23,7 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
       ]
       test_analyze_commits(commits)
 
-      expect(execute_lane_test(match: 'v*')).to eq(true)
+      expect(execute_lane_test(match: 'v*')).to eq(["1.0.9", true])
       expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_NEXT_VERSION]).to eq("1.0.9")
     end
 
@@ -35,7 +35,7 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
       ]
       test_analyze_commits(commits)
 
-      expect(execute_lane_test(match: 'v*')).to eq(true)
+      expect(execute_lane_test(match: 'v*')).to eq(["1.1.0", true])
       expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_NEXT_VERSION]).to eq("1.1.0")
     end
 
@@ -47,7 +47,7 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
       ]
       test_analyze_commits(commits)
 
-      expect(execute_lane_test(match: 'v*')).to eq(true)
+      expect(execute_lane_test(match: 'v*')).to eq(["2.0.0", true])
       expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_NEXT_VERSION]).to eq("2.0.0")
     end
 
@@ -59,7 +59,7 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
       ]
       test_analyze_commits(commits)
 
-      expect(execute_lane_test(match: 'v*')).to eq(true)
+      expect(execute_lane_test(match: 'v*')).to eq(["2.0.0", true])
       expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_NEXT_VERSION]).to eq("2.0.0")
     end
 
@@ -76,7 +76,7 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
         it "should correctly parse and output scopes" do
           test_analyze_commits(commits)
 
-          expect(execute_lane_test(match: 'v*')).to eq(true)
+          expect(execute_lane_test(match: 'v*')).to eq(["1.1.0", true])
           expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_NEXT_VERSION]).to eq("1.1.0")
         end
       end
@@ -85,21 +85,21 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
         it "should accommodate an empty ignore_scopes array" do
           test_analyze_commits(commits)
 
-          expect(execute_lane_test(match: 'v*', ignore_scopes: [])).to eq(true)
+          expect(execute_lane_test(match: 'v*', ignore_scopes: [])).to eq(["1.1.0", true])
           expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_NEXT_VERSION]).to eq("1.1.0")
         end
 
         it "should skip a single scopes if it has been added to ignore_scopes" do
           test_analyze_commits(commits)
 
-          expect(execute_lane_test(match: 'v*', ignore_scopes: ['android'])).to eq(true)
+          expect(execute_lane_test(match: 'v*', ignore_scopes: ['android'])).to eq(["1.1.0", true])
           expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_NEXT_VERSION]).to eq("1.1.0")
         end
 
         it "should skip multiple scopes if they have been added to ignore_scopes" do
           test_analyze_commits(commits)
 
-          expect(execute_lane_test(match: 'v*', ignore_scopes: ['android', 'ios'])).to eq(true)
+          expect(execute_lane_test(match: 'v*', ignore_scopes: ['android', 'ios'])).to eq(["1.0.9", true])
           expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_NEXT_VERSION]).to eq("1.0.9")
         end
 
@@ -109,7 +109,7 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
           ]
           test_analyze_commits(commits)
 
-          expect(execute_lane_test(match: 'v*', ignore_scopes: ['ios'])).to eq(false)
+          expect(execute_lane_test(match: 'v*', ignore_scopes: ['ios'])).to eq(["1.0.8", false])
         end
       end
     end
@@ -122,7 +122,7 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
       ]
       test_analyze_commits(commits)
 
-      expect(execute_lane_test(match: 'v*')).to eq(false)
+      expect(execute_lane_test(match: 'v*')).to eq(["1.0.8", false])
       expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_NEXT_VERSION]).to eq("1.0.8")
     end
 
@@ -133,7 +133,7 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
       ]
       test_analyze_commits(commits)
 
-      expect(execute_lane_test(match: 'v*')).to eq(false)
+      expect(execute_lane_test(match: 'v*')).to eq(["1.0.8", false])
       expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_NEXT_VERSION]).to eq("1.0.8")
     end
 
@@ -150,7 +150,7 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
       ]
       test_analyze_commits(commits)
 
-      expect(execute_lane_test(match: 'v*')).to eq(true)
+      expect(execute_lane_test(match: 'v*')).to eq(["1.0.9", true])
       expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_NEXT_VERSION]).to eq("1.0.9")
     end
 
@@ -170,7 +170,7 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
       allow(Fastlane::Actions::AnalyzeCommitsAction).to receive(:get_last_tag).and_return('v0.0.0-1-g71ce4d8')
       allow(Fastlane::Actions::AnalyzeCommitsAction).to receive(:get_commits_from_hash).and_return(commits)
 
-      expect(execute_lane_test(match: 'v*')).to eq(true)
+      expect(execute_lane_test(match: 'v*')).to eq(["0.1.0", true])
       expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_NEXT_VERSION]).to eq("0.1.0")
       expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_LAST_INCOMPATIBLE_CODEPUSH_VERSION]).to eq("0.0.6")
     end
@@ -189,7 +189,7 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
       allow(Fastlane::Actions::AnalyzeCommitsAction).to receive(:get_last_tag).and_return('v0.0.0-1-g71ce4d8')
       allow(Fastlane::Actions::AnalyzeCommitsAction).to receive(:get_commits_from_hash).and_return(commits)
 
-      expect(execute_lane_test(match: 'v*')).to eq(true)
+      expect(execute_lane_test(match: 'v*')).to eq(["0.1.0", true])
       expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_NEXT_VERSION]).to eq("0.1.0")
       expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_LAST_INCOMPATIBLE_CODEPUSH_VERSION]).to eq("0.0.4")
     end
@@ -211,7 +211,7 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
       allow(Fastlane::Actions::AnalyzeCommitsAction).to receive(:get_last_tag).and_return('v0.0.0-1-g71ce4d8')
       allow(Fastlane::Actions::AnalyzeCommitsAction).to receive(:get_commits_from_hash).and_return(commits)
 
-      expect(execute_lane_test(match: 'v*')).to eq(true)
+      expect(execute_lane_test(match: 'v*')).to eq(["0.1.0", true])
       expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_NEXT_VERSION]).to eq("0.1.0")
       expect(Fastlane::Actions.lane_context[Fastlane::Actions::SharedValues::RELEASE_LAST_INCOMPATIBLE_CODEPUSH_VERSION]).to eq("0.0.3")
     end

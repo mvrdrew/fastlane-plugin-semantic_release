@@ -28,7 +28,7 @@ module Fastlane
 
         # Get commits log between last version and head
         commits = get_commits_from_hash(hash: last_tag_hash)
-        parsed = parse_commits(commits)
+        parsed = parse_commits(commits, params[:ignore_scopes])
 
         commit_url = params[:commit_url]
         format = params[:format]
@@ -165,7 +165,7 @@ module Fastlane
         end
       end
 
-      def self.parse_commits(commits)
+      def self.parse_commits(commits, scopes_to_ignore)
         parsed = []
         # %s|%b|%H|%h|%an|%at
         commits.each do |line|
@@ -180,6 +180,12 @@ module Fastlane
           commit[:short_hash] = splitted[3]
           commit[:author_name] = splitted[4]
           commit[:commit_date] = splitted[5]
+
+          unless commit[:scope].nil?
+            # if this commit has a scope, then we need to inspect to see if that is one of the scopes we're trying to exclude
+            scope = commit[:scope]
+            next if scopes_to_ignore.include?(scope) #=> true
+          end
 
           parsed.push(commit)
         end
@@ -262,6 +268,13 @@ module Fastlane
             description: "Whether you want to display the links to commit IDs",
             default_value: true,
             type: Boolean,
+            optional: true
+          ),
+          FastlaneCore::ConfigItem.new(
+            key: :ignore_scopes,
+            description: "To ignore certain scopes when calculating releases",
+            default_value: [],
+            type: Array,
             optional: true
           )
         ]

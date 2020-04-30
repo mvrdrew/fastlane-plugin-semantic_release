@@ -19,7 +19,7 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
     it "should increment fix and return true" do
       commits = [
         "docs: ...|",
-        "fix: ...|"
+        "bugfix: ...|"
       ]
       test_analyze_commits(commits)
 
@@ -30,8 +30,8 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
     it "should increment feat and fix and return true" do
       commits = [
         "docs: ...|",
-        "feat: ...|",
-        "fix: ...|"
+        "feature: ...|",
+        "bugfix: ...|"
       ]
       test_analyze_commits(commits)
 
@@ -42,8 +42,8 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
     it "should increment major change and return true" do
       commits = [
         "docs: ...|",
-        "feat: ...|",
-        "fix: ...|BREAKING CHANGE: Test"
+        "feature: ...|",
+        "bugfix: ...|BREAKING CHANGE: Test"
       ]
       test_analyze_commits(commits)
 
@@ -54,8 +54,8 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
     it "should increment major change and return true" do
       commits = [
         "docs: ...|",
-        "feat: ...|",
-        "fix!: ...|BREAKING CHANGE: Bump major version"
+        "feature: ...|",
+        "bugfix!: ...|BREAKING CHANGE: Bump major version"
       ]
       test_analyze_commits(commits)
 
@@ -65,11 +65,11 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
 
     describe "scopes" do
       commits = [
-        "fix(scope): ...|",
-        "feat(ios): ...|",
-        "fix(ios): ...|",
-        "feat(android): ...|",
-        "fix(android): ...|"
+        "bugfix(scope): ...|",
+        "feature(ios): ...|",
+        "bugfix(ios): ...|",
+        "feature(android): ...|",
+        "bugfix(android): ...|"
       ]
 
       describe "parsing of scopes" do
@@ -105,7 +105,7 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
 
         it "should not pass analysis checks if all commits are caught by excluded scopes" do
           commits = [
-            "fix(ios): ...|"
+            "bugfix(ios): ...|"
           ]
           test_analyze_commits(commits)
 
@@ -139,14 +139,14 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
 
     it "should deal with multiline comments" do
       commits = [
-        "fix: add alpha deploy (#10)|* chore: test alpha build with CircleCI
+        "bugfix: add alpha deploy (#10)|* chore: test alpha build with CircleCI
 
         * chore: skip code check for now
 
         * chore: ignore gems dirs
         ",
         "chore: add alpha deploy triggered by alpha branch|",
-        "fix: fix navigation after user logs in|"
+        "bugfix: fix navigation after user logs in|"
       ]
       test_analyze_commits(commits)
 
@@ -156,16 +156,16 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
 
     it "should provide codepush last version" do
       commits = [
-        "fix: ...|codepush: ok",
-        "fix: ...|codepush: ok",
-        "fix: ...|codepush: ok",
-        "fix: ...|codepush: ok",
-        "fix: ...|codepush: ok",
-        "fix: ...",
-        "fix: ...|codepush: ok",
+        "bugfix: ...|codepush: ok",
+        "bugfix: ...|codepush: ok",
+        "bugfix: ...|codepush: ok",
+        "bugfix: ...|codepush: ok",
+        "bugfix: ...|codepush: ok",
+        "bugfix: ...",
+        "bugfix: ...|codepush: ok",
         "docs: ...|codepush: ok",
-        "feat: ...|codepush: ok",
-        "fix: ...|codepush: ok"
+        "feature: ...|codepush: ok",
+        "bugfix: ...|codepush: ok"
       ]
       allow(Fastlane::Actions::AnalyzeCommitsAction).to receive(:get_last_tag).and_return('v0.0.0-1-g71ce4d8')
       allow(Fastlane::Actions::AnalyzeCommitsAction).to receive(:get_commits_from_hash).and_return(commits)
@@ -177,14 +177,14 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
 
     it "should accept only codepush: ok as codepush friendly commit" do
       commits = [
-        "fix: ...|codepush: ok",
-        "fix: ...|codepush: ok",
-        "fix: ...|codepush: ok",
-        "fix: ...|codepush",
-        "fix: ...|codepush: ok",
+        "bugfix: ...|codepush: ok",
+        "bugfix: ...|codepush: ok",
+        "bugfix: ...|codepush: ok",
+        "bugfix: ...|codepush",
+        "bugfix: ...|codepush: ok",
         "docs: ...|codepush: ok",
-        "feat: ...|codepush: ok",
-        "fix: ...|codepush: ok"
+        "feature: ...|codepush: ok",
+        "bugfix: ...|codepush: ok"
       ]
       allow(Fastlane::Actions::AnalyzeCommitsAction).to receive(:get_last_tag).and_return('v0.0.0-1-g71ce4d8')
       allow(Fastlane::Actions::AnalyzeCommitsAction).to receive(:get_commits_from_hash).and_return(commits)
@@ -196,17 +196,17 @@ describe Fastlane::Actions::AnalyzeCommitsAction do
 
     it "should docs, test, etc commits are codepush friendly automatically" do
       commits = [
-        "fix: ...|codepush: ok",
-        "fix: ...|codepush: ok",
-        "fix: ...|codepush",
+        "bugfix: ...|codepush: ok",
+        "bugfix: ...|codepush: ok",
+        "bugfix: ...|codepush",
         "test: ...",
         "refactor: ...|codepush: ok",
-        "feat: ...|codepush: ok",
+        "feature: ...|codepush: ok",
         "perf: ...|codepush: ok",
         "chore: ...",
         "docs: ...",
-        "feat: ...|codepush: ok",
-        "fix: ...|codepush: ok"
+        "feature: ...|codepush: ok",
+        "bugfix: ...|codepush: ok"
       ]
       allow(Fastlane::Actions::AnalyzeCommitsAction).to receive(:get_last_tag).and_return('v0.0.0-1-g71ce4d8')
       allow(Fastlane::Actions::AnalyzeCommitsAction).to receive(:get_commits_from_hash).and_return(commits)

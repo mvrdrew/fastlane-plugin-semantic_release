@@ -97,7 +97,7 @@ module Fastlane
             next if scopes_to_ignore.include?(scope) #=> true
           end
 
-          if commit[:release] == "major" || commit[:is_breaking_change]
+          if commit[:release] == "major" || commit[:is_breaking_change] || commit[:has_exclamation_mark]
             major_changes += 1
           elsif commit[:release] == "minor"
             minor_changes += 1
@@ -143,11 +143,16 @@ module Fastlane
       def self.is_codepush_friendly(params)
         # Begining of the branch is taken for codepush analysis
         hash = Actions.sh('git rev-list --max-parents=0 HEAD', log: false).chomp
-        next_major = 0
-        next_minor = 0
-        next_patch = 0
+        major_changes = 0
+        minor_changes = 0
+        patch_changes = 0
         last_incompatible_codepush_version = '0.0.0'
 
+        # converts last version string to the int numbers
+        next_major = (last_incompatible_codepush_version.split('.')[0] || 0).to_i
+        next_minor = (last_incompatible_codepush_version.split('.')[1] || 0).to_i
+        next_patch = (last_incompatible_codepush_version.split('.')[2] || 0).to_i
+        
         # Get commits log between last version and head
         splitted = get_commits_from_hash(hash: hash)
         releases = params[:releases]
@@ -163,16 +168,26 @@ module Fastlane
             codepush_friendly: codepush_friendly
           )
 
-          if commit[:release] == "major" || commit[:is_breaking_change]
+          if commit[:release] == "major" || commit[:is_breaking_change] || commit[:has_exclamation_mark]
+            major_changes += 1
+          elsif commit[:release] == "minor"
+            minor_changes += 1
+          elsif commit[:release] == "patch"
+            patch_changes += 1
+          end
+
+          if major_changes > 0
             next_major += 1
             next_minor = 0
             next_patch = 0
-          elsif commit[:release] == "minor"
+          elsif minor_changes > 0
             next_minor += 1
             next_patch = 0
-          elsif commit[:release] == "patch"
+          elsif patch_changes > 0
             next_patch += 1
           end
+  
+          next_version = "#{next_major}.#{next_minor}.#{next_patch}"
 
           unless commit[:is_codepush_friendly]
             last_incompatible_codepush_version = "#{next_major}.#{next_minor}.#{next_patch}"
@@ -216,7 +231,7 @@ module Fastlane
           FastlaneCore::ConfigItem.new(
             key: :releases,
             description: "Map types of commit to release (major, minor, patch)",
-            default_value: { fix: "patch", feat: "minor" },
+            default_value: { bugfix: "patch", feature: "minor" },
             type: Hash
           ),
           FastlaneCore::ConfigItem.new(

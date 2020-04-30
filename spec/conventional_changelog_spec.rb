@@ -46,7 +46,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
     describe 'section creation' do
       commits = [
         "docs: sub|body|long_hash|short_hash|Jiri Otahal|time",
-        "fix: sub||long_hash|short_hash|Jiri Otahal|time"
+        "bugfix: sub||long_hash|short_hash|Jiri Otahal|time"
       ]
 
       it 'should generate sections in markdown format' do
@@ -79,7 +79,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
 
     describe 'hiding headers if display_title is false' do
       commits = [
-        "fix: sub|BREAKING CHANGE: Test|long_hash|short_hash|Jiri Otahal|time"
+        "bugfix: sub|BREAKING CHANGE: Test|long_hash|short_hash|Jiri Otahal|time"
       ]
 
       it "should hide in markdown format" do
@@ -112,7 +112,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
 
     describe 'showing the author if display_author is true' do
       commits = [
-        "fix: sub|BREAKING CHANGE: Test|long_hash|short_hash|Jiri Otahal|time"
+        "bugfix: sub|BREAKING CHANGE: Test|long_hash|short_hash|Jiri Otahal|time"
       ]
 
       it "should display in markdown format" do
@@ -128,7 +128,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
     describe 'displaying a breaking change' do
       it "should display in markdown format" do
         commits = [
-          "fix: sub|BREAKING CHANGE: Test|long_hash|short_hash|Jiri Otahal|time"
+          "bugfix: sub|BREAKING CHANGE: Test|long_hash|short_hash|Jiri Otahal|time"
         ]
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
@@ -140,7 +140,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
 
       it "should display in slack format" do
         commits = [
-          "fix: sub|BREAKING CHANGE: Test|long_hash|short_hash|Jiri Otahal|time"
+          "bugfix: sub|BREAKING CHANGE: Test|long_hash|short_hash|Jiri Otahal|time"
         ]
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
@@ -153,7 +153,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
 
     describe 'displaying scopes' do
       commits = [
-        "fix(test): sub||long_hash|short_hash|Jiri Otahal|time"
+        "bugfix(test): sub||long_hash|short_hash|Jiri Otahal|time"
       ]
 
       it "should display in markdown format" do
@@ -179,7 +179,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
       commits = [
         "Merge ...||long_hash|short_hash|Jiri Otahal|time",
         "Custom Merge...||long_hash|short_hash|Jiri Otahal|time",
-        "fix(test): sub||long_hash|short_hash|Jiri Otahal|time"
+        "bugfix(test): sub||long_hash|short_hash|Jiri Otahal|time"
       ]
 
       it "should skip in markdown format" do
@@ -204,7 +204,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
     describe 'hiding links if display_links is false' do
       commits = [
         "docs: sub|body|long_hash|short_hash|Jiri Otahal|time",
-        "fix: sub||long_hash|short_hash|Jiri Otahal|time"
+        "bugfix: sub||long_hash|short_hash|Jiri Otahal|time"
       ]
 
       it "should hide in markdown format" do

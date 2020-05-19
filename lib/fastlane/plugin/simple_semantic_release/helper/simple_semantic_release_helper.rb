@@ -4,9 +4,9 @@ module Fastlane
   UI = FastlaneCore::UI unless Fastlane.const_defined?("UI")
 
   module Helper
-    class SemanticReleaseHelper
+    class SimpleSemanticReleaseHelper
       # class methods that you define here become available in your action
-      # as `Helper::SemanticReleaseHelper.your_method`
+      # as `Helper::SimpleSemanticReleaseHelper.your_method`
       #
       def self.git_log(pretty, start)
         command = "git log --pretty='#{pretty}' --reverse #{start}..HEAD"

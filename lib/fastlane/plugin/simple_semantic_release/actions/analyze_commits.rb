@@ -1,5 +1,5 @@
 require 'fastlane/action'
-require_relative '../helper/semantic_release_helper'
+require_relative '../helper/simple_semantic_release_helper'
 
 module Fastlane
   module Actions
@@ -31,7 +31,7 @@ module Fastlane
       end
 
       def self.get_commits_from_hash(params)
-        commits = Helper::SemanticReleaseHelper.git_log('%s|%b|>', params[:hash])
+        commits = Helper::SimpleSemanticReleaseHelper.git_log('%s|%b|>', params[:hash])
         commits.split("|>")
       end
 
@@ -83,7 +83,7 @@ module Fastlane
         splitted.each do |line|
           # conventional commits are in format
           # type: subject (fix: app crash - for example)
-          commit = Helper::SemanticReleaseHelper.parse_commit(
+          commit = Helper::SimpleSemanticReleaseHelper.parse_commit(
             commit_subject: line.split("|")[0],
             commit_body: line.split("|")[1],
             releases: releases
@@ -121,7 +121,7 @@ module Fastlane
 
         next_version = "#{next_major}.#{next_minor}.#{next_patch}"
 
-        is_next_version_releasable = Helper::SemanticReleaseHelper.semver_gt(next_version, version)
+        is_next_version_releasable = Helper::SimpleSemanticReleaseHelper.semver_gt(next_version, version)
 
         Actions.lane_context[SharedValues::RELEASE_ANALYZED] = true
         Actions.lane_context[SharedValues::RELEASE_IS_NEXT_VERSION_HIGHER] = is_next_version_releasable
@@ -161,7 +161,7 @@ module Fastlane
         splitted.each do |line|
           # conventional commits are in format
           # type: subject (fix: app crash - for example)
-          commit = Helper::SemanticReleaseHelper.parse_commit(
+          commit = Helper::SimpleSemanticReleaseHelper.parse_commit(
             commit_subject: line.split("|")[0],
             commit_body: line.split("|")[1],
             releases: releases,
@@ -187,7 +187,7 @@ module Fastlane
             next_patch += 1
           end
 
-          next_version = "#{next_major}.#{next_minor}.#{next_patch}"
+          # next_version = "#{next_major}.#{next_minor}.#{next_patch}"
 
           unless commit[:is_codepush_friendly]
             last_incompatible_codepush_version = "#{next_major}.#{next_minor}.#{next_patch}"

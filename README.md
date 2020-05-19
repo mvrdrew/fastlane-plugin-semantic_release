@@ -1,11 +1,21 @@
-# semantic_release plugin for `fastlane`
+# simple_semantic_release plugin for `fastlane`
 
-[![CircleCI](https://circleci.com/gh/xotahal/fastlane-plugin-semantic_release.svg?style=svg)](https://circleci.com/gh/xotahal/fastlane-plugin-semantic_release) [![License](https://img.shields.io/github/license/SiarheiFedartsou/fastlane-plugin-versioning.svg)](https://github.com/SiarheiFedartsou/fastlane-plugin-versioning/blob/master/LICENSE) [![Gem Version](https://badge.fury.io/rb/fastlane-plugin-semantic_release.svg)](https://badge.fury.io/rb/fastlane-plugin-semantic_release) [![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-versioning)
+[![License](https://img.shields.io/github/license/SiarheiFedartsou/fastlane-plugin-versioning.svg)](https://github.com/SiarheiFedartsou/fastlane-plugin-versioning/blob/master/LICENSE)
+
+## Credit
+
+This is a fork of `fastlane-plugin_semantic_release`. It was forked to change the version numbering to be a little less enthusiastic, as the [original author has made it clear](https://github.com/xotahal/fastlane-plugin-semantic_release/issues/11) he has no plans to change it. While it's true that worrying about version numbering is a waste of time this plugin is meant to solve, it would still be nice to have an option to keep version increments to a minimum.
+
+In addition to the version numbering changes, some additional changes have been made to the changelog generation to conform more closely the the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format, as well as remove some Markdown lint errors.
 
 ## Getting Started
 
-```
-fastlane add_plugin semantic_release
+This fork is not going to be published, in order to use it you'll need to point to this repository directly.
+
+Update your project's `Pluginfile` and add this line:
+
+```ruby
+gem 'fastlane-plugin-simple_semantic_release', git: 'https://github.com/mvrdrew/fastlane-plugin-simple_semantic_release'
 ```
 
 ## About
@@ -35,11 +45,9 @@ Available parameters:
 
 Example:
 
-```
+```ruby
 notes = conventional_changelog(format: 'slack', title: 'Android Alpha')
 ```
-
-<img src="https://raw.githubusercontent.com/xotahal/fastlane-plugin-semantic_release/master/docs/Changelog.png" />
 
 ### `analyze_commits`
 
@@ -56,13 +64,13 @@ Options:
 
 Example usage:
 
-```
+```ruby
 isReleasable = analyze_commits(match: 'ios/beta*')
 ```
 
 It provides these variables in `lane_context`.
 
-```
+```ruby
 ['RELEASE_ANALYZED', 'True if commits were analyzed.'],
 ['RELEASE_IS_NEXT_VERSION_HIGHER', 'True if next version is higher then last version'],
 ['RELEASE_LAST_TAG_HASH', 'Hash of commit that is tagged as a last version'],
@@ -75,18 +83,10 @@ It provides these variables in `lane_context`.
 
 And you can access these like this:
 
-`next_version = lane_context[SharedValues::RELEASE_NEXT_VERSION]`
-
-<img src="https://raw.githubusercontent.com/xotahal/fastlane-plugin-semantic_release/master/docs/Analyze.png" />
+```ruby
+next_version = lane_context[SharedValues::RELEASE_NEXT_VERSION]
+```
 
 ## Tests
 
 To run the test suite (contained in `./spec`), call `bundle exec rake`
-
-## Questions
-
-If you need anything ping us on [twitter](http://bit.ly/t-xotahal).
-
-| Jiri Otahal                                                                                                                            |
-| -------------------------------------------------------------------------------------------------------------------------------------- |
-| [<img src="https://avatars3.githubusercontent.com/u/3531955?v=4" width="100px;" style="border-radius:50px"/>](http://bit.ly/t-xotahal) |

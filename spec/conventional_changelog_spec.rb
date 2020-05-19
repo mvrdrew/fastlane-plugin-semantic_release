@@ -46,14 +46,14 @@ describe Fastlane::Actions::ConventionalChangelogAction do
     describe 'section creation' do
       commits = [
         "docs: sub|body|long_hash|short_hash|Jiri Otahal|time",
-        "bugfix: sub||long_hash|short_hash|Jiri Otahal|time"
+        "fix: sub||long_hash|short_hash|Jiri Otahal|time"
       ]
 
       it 'should generate sections in markdown format' do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "## [1.0.2] - 2019-05-25\n\n### Bug fixes\n\n- sub ([short_hash](/long_hash))\n\n### Documentation\n\n- sub ([short_hash](/long_hash))"
+        result = "## [1.0.2] - 2019-05-25\n\n### Fixes\n\n- sub ([short_hash](/long_hash))\n\n### Documentation\n\n- sub ([short_hash](/long_hash))"
 
         expect(execute_lane_test).to eq(result)
       end
@@ -62,7 +62,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "1.0.2 - 2019-05-25\n\nBug fixes:\n\n- sub (/long_hash)\n\nDocumentation:\n\n- sub (/long_hash)"
+        result = "1.0.2 - 2019-05-25\n\nFixes:\n\n- sub (/long_hash)\n\nDocumentation:\n\n- sub (/long_hash)"
 
         expect(execute_lane_test_plain).to eq(result)
       end
@@ -71,7 +71,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "*1.0.2* - 2019-05-25\n\n*Bug fixes*\n\n- sub (</long_hash|short_hash>)\n\n*Documentation*\n\n- sub (</long_hash|short_hash>)"
+        result = "*1.0.2* - 2019-05-25\n\n*Fixes*\n\n- sub (</long_hash|short_hash>)\n\n*Documentation*\n\n- sub (</long_hash|short_hash>)"
 
         expect(execute_lane_test_slack).to eq(result)
       end
@@ -79,14 +79,14 @@ describe Fastlane::Actions::ConventionalChangelogAction do
 
     describe 'hiding headers if display_title is false' do
       commits = [
-        "bugfix: sub|BREAKING CHANGE: Test|long_hash|short_hash|Jiri Otahal|time"
+        "fix: sub|BREAKING CHANGE: Test|long_hash|short_hash|Jiri Otahal|time"
       ]
 
       it "should hide in markdown format" do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "### Bug fixes\n\n- sub ([short_hash](/long_hash))\n\n### BREAKING CHANGES\n\n- Test ([short_hash](/long_hash))"
+        result = "### Fixes\n\n- sub ([short_hash](/long_hash))\n\n### BREAKING CHANGES\n\n- Test ([short_hash](/long_hash))"
 
         expect(execute_lane_test_no_header).to eq(result)
       end
@@ -95,7 +95,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "Bug fixes:\n\n- sub (/long_hash)\n\nBREAKING CHANGES:\n\n- Test (/long_hash)"
+        result = "Fixes:\n\n- sub (/long_hash)\n\nBREAKING CHANGES:\n\n- Test (/long_hash)"
 
         expect(execute_lane_test_no_header_plain).to eq(result)
       end
@@ -104,7 +104,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "*Bug fixes*\n\n- sub (</long_hash|short_hash>)\n\n*BREAKING CHANGES*\n\n- Test (</long_hash|short_hash>)"
+        result = "*Fixes*\n\n- sub (</long_hash|short_hash>)\n\n*BREAKING CHANGES*\n\n- Test (</long_hash|short_hash>)"
 
         expect(execute_lane_test_no_header_slack).to eq(result)
       end
@@ -112,14 +112,14 @@ describe Fastlane::Actions::ConventionalChangelogAction do
 
     describe 'showing the author if display_author is true' do
       commits = [
-        "bugfix: sub|BREAKING CHANGE: Test|long_hash|short_hash|Jiri Otahal|time"
+        "fix: sub|BREAKING CHANGE: Test|long_hash|short_hash|Jiri Otahal|time"
       ]
 
       it "should display in markdown format" do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "## [1.0.2] - 2019-05-25\n\n### Bug fixes\n\n- sub ([short_hash](/long_hash)) - Jiri Otahal\n\n### BREAKING CHANGES\n\n- Test ([short_hash](/long_hash)) - Jiri Otahal"
+        result = "## [1.0.2] - 2019-05-25\n\n### Fixes\n\n- sub ([short_hash](/long_hash)) - Jiri Otahal\n\n### BREAKING CHANGES\n\n- Test ([short_hash](/long_hash)) - Jiri Otahal"
 
         expect(execute_lane_test_author).to eq(result)
       end
@@ -128,24 +128,24 @@ describe Fastlane::Actions::ConventionalChangelogAction do
     describe 'displaying a breaking change' do
       it "should display in markdown format" do
         commits = [
-          "bugfix: sub|BREAKING CHANGE: Test|long_hash|short_hash|Jiri Otahal|time"
+          "fix: sub|BREAKING CHANGE: Test|long_hash|short_hash|Jiri Otahal|time"
         ]
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "## [1.0.2] - 2019-05-25\n\n### Bug fixes\n\n- sub ([short_hash](/long_hash))\n\n### BREAKING CHANGES\n\n- Test ([short_hash](/long_hash))"
+        result = "## [1.0.2] - 2019-05-25\n\n### Fixes\n\n- sub ([short_hash](/long_hash))\n\n### BREAKING CHANGES\n\n- Test ([short_hash](/long_hash))"
 
         expect(execute_lane_test).to eq(result)
       end
 
       it "should display in slack format" do
         commits = [
-          "bugfix: sub|BREAKING CHANGE: Test|long_hash|short_hash|Jiri Otahal|time"
+          "fix: sub|BREAKING CHANGE: Test|long_hash|short_hash|Jiri Otahal|time"
         ]
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "*1.0.2* - 2019-05-25\n\n*Bug fixes*\n\n- sub (</long_hash|short_hash>)\n\n*BREAKING CHANGES*\n\n- Test (</long_hash|short_hash>)"
+        result = "*1.0.2* - 2019-05-25\n\n*Fixes*\n\n- sub (</long_hash|short_hash>)\n\n*BREAKING CHANGES*\n\n- Test (</long_hash|short_hash>)"
 
         expect(execute_lane_test_slack).to eq(result)
       end
@@ -153,14 +153,14 @@ describe Fastlane::Actions::ConventionalChangelogAction do
 
     describe 'displaying scopes' do
       commits = [
-        "bugfix(test): sub||long_hash|short_hash|Jiri Otahal|time"
+        "fix(test): sub||long_hash|short_hash|Jiri Otahal|time"
       ]
 
       it "should display in markdown format" do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "## [1.0.2] - 2019-05-25\n\n### Bug fixes\n\n- **test:** sub ([short_hash](/long_hash))"
+        result = "## [1.0.2] - 2019-05-25\n\n### Fixes\n\n- **test:** sub ([short_hash](/long_hash))"
 
         expect(execute_lane_test).to eq(result)
       end
@@ -169,7 +169,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "*1.0.2* - 2019-05-25\n\n*Bug fixes*\n\n- *test:* sub (</long_hash|short_hash>)"
+        result = "*1.0.2* - 2019-05-25\n\n*Fixes*\n\n- *test:* sub (</long_hash|short_hash>)"
 
         expect(execute_lane_test_slack).to eq(result)
       end
@@ -179,14 +179,14 @@ describe Fastlane::Actions::ConventionalChangelogAction do
       commits = [
         "Merge ...||long_hash|short_hash|Jiri Otahal|time",
         "Custom Merge...||long_hash|short_hash|Jiri Otahal|time",
-        "bugfix(test): sub||long_hash|short_hash|Jiri Otahal|time"
+        "fix(test): sub||long_hash|short_hash|Jiri Otahal|time"
       ]
 
       it "should skip in markdown format" do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "## [1.0.2] - 2019-05-25\n\n### Bug fixes\n\n- **test:** sub ([short_hash](/long_hash))\n\n### Other work\n\n- Custom Merge... ([short_hash](/long_hash))"
+        result = "## [1.0.2] - 2019-05-25\n\n### Fixes\n\n- **test:** sub ([short_hash](/long_hash))\n\n### Other work\n\n- Custom Merge... ([short_hash](/long_hash))"
 
         expect(execute_lane_test).to eq(result)
       end
@@ -195,7 +195,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "*1.0.2* - 2019-05-25\n\n*Bug fixes*\n\n- *test:* sub (</long_hash|short_hash>)\n\n*Other work*\n\n- Custom Merge... (</long_hash|short_hash>)"
+        result = "*1.0.2* - 2019-05-25\n\n*Fixes*\n\n- *test:* sub (</long_hash|short_hash>)\n\n*Other work*\n\n- Custom Merge... (</long_hash|short_hash>)"
 
         expect(execute_lane_test_slack).to eq(result)
       end
@@ -204,14 +204,14 @@ describe Fastlane::Actions::ConventionalChangelogAction do
     describe 'hiding links if display_links is false' do
       commits = [
         "docs: sub|body|long_hash|short_hash|Jiri Otahal|time",
-        "bugfix: sub||long_hash|short_hash|Jiri Otahal|time"
+        "fix: sub||long_hash|short_hash|Jiri Otahal|time"
       ]
 
       it "should hide in markdown format" do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "## [1.0.2] - 2019-05-25\n\n### Bug fixes\n\n- sub\n\n### Documentation\n\n- sub"
+        result = "## [1.0.2] - 2019-05-25\n\n### Fixes\n\n- sub\n\n### Documentation\n\n- sub"
 
         expect(execute_lane_test_no_links).to eq(result)
       end
@@ -220,7 +220,7 @@ describe Fastlane::Actions::ConventionalChangelogAction do
         allow(Fastlane::Actions::ConventionalChangelogAction).to receive(:get_commits_from_hash).and_return(commits)
         allow(Date).to receive(:today).and_return(Date.new(2019, 5, 25))
 
-        result = "*1.0.2* - 2019-05-25\n\n*Bug fixes*\n\n- sub\n\n*Documentation*\n\n- sub"
+        result = "*1.0.2* - 2019-05-25\n\n*Fixes*\n\n- sub\n\n*Documentation*\n\n- sub"
 
         expect(execute_lane_test_no_links_slack).to eq(result)
       end

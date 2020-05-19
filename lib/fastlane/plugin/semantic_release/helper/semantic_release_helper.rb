@@ -18,7 +18,7 @@ module Fastlane
         commit_body = params[:commit_body]
         releases = params[:releases]
         codepush_friendly = params[:codepush_friendly]
-        pattern = /^(feature|bugfix|build|docs|refactor|ci|perf|revert|test|style)(\((.*)\))?(!?)\: (.*)/
+        pattern = /^(feat|fix|build|docs|refactor|ci|perf|revert|test|style)(\((.*)\))?(!?)\: (.*)/
         breaking_change_pattern = /BREAKING CHANGES?: (.*)/
         codepush_pattern = /codepush?: (.*)/
 

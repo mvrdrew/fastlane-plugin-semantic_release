@@ -152,7 +152,7 @@ module Fastlane
         next_major = (last_incompatible_codepush_version.split('.')[0] || 0).to_i
         next_minor = (last_incompatible_codepush_version.split('.')[1] || 0).to_i
         next_patch = (last_incompatible_codepush_version.split('.')[2] || 0).to_i
-        
+
         # Get commits log between last version and head
         splitted = get_commits_from_hash(hash: hash)
         releases = params[:releases]
@@ -186,7 +186,7 @@ module Fastlane
           elsif patch_changes > 0
             next_patch += 1
           end
-  
+
           next_version = "#{next_major}.#{next_minor}.#{next_patch}"
 
           unless commit[:is_codepush_friendly]
@@ -231,7 +231,7 @@ module Fastlane
           FastlaneCore::ConfigItem.new(
             key: :releases,
             description: "Map types of commit to release (major, minor, patch)",
-            default_value: { bugfix: "patch", feature: "minor" },
+            default_value: { fix: "patch", feat: "minor" },
             type: Hash
           ),
           FastlaneCore::ConfigItem.new(
